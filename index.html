@@ -1,20 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
-  <title>Salary Calculator</title>
-</head>
-<body>
-  <header>
-    <h1>Salary Calculator</h1>
-  </header>
-  <main>
-    <h2>Add Employee</h2>
-    <h2>Employees</h2>
-  </main>
-  <footer>
-    <p>Total Monthly</p>
-  </footer>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+    <title>Salary Calculator</title>
+  </head>
+  <body>
+    <header>
+      <h1>Salary Calculator</h1>
+    </header>
+    <main>
+      <h2>Add Employee</h2>
+      <form onsubmit="addEmployee(event)">
+        <input
+          type="text"
+          placeholder="First Name"
+          id="fn"
+          required
+          data-testid="firstNameInput"
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          id="ln"
+          required
+          data-testid="lastNameInput"
+        />
+        <input
+          type="text"
+          placeholder="ID"
+          id="id"
+          required
+          data-testid="idInput"
+        />
+        <input
+          type="text"
+          placeholder="Title"
+          id="t"
+          required
+          data-testid="titleInput"
+        />
+        <input
+          type="number"
+          placeholder="Annual Salary"
+          id="s"
+          required
+          data-testid="annualSalaryInput"
+        />
+        <button type="submit" data-testid="submitButton">Submit</button>
+      </form>
+      <h2>Employees</h2>
+      <table id="employee-table">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Annual Salary</th>
+          <th></th>
+        </tr>
+      </table>
+    </main>
+    <footer>
+      <p>Total Monthly: <span id="salary-total">0</span></p>
+    </footer>
+    <template id="employee-row">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><button onclick="deleteParent(event)">X</button></td>
+      </tr>
+    </template>
+  </body>
 </html>

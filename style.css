@@ -1,0 +1,17 @@
+table {
+  border-collapse: collapse;
+}
+
+td,
+th {
+  border: 1px solid #332c2c;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.over-budget {
+  background-color: red;
+}
