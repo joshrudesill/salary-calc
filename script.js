@@ -5,8 +5,9 @@ let total = 0;
 // Function to load employee array from localStorage if it exists
 function onLoad() {
   // Get employees key
-  let ls = window.localStorage.getItem("employees");
+  //let ls = window.localStorage.getItem("employees");
   // If there is something there
+  let ls = false;
   if (ls) {
     // Parse the json into an object
     employees = JSON.parse(ls);
@@ -29,7 +30,7 @@ function onLoad() {
       document.querySelector("#employee-table").appendChild(clone);
     }
     // Fill in total
-    document.querySelector("#salary-total").textContent = `${total}`;
+    document.querySelector("footer").textContent = `Total Monthly: ${total}`;
 
     // Do over budget check
     if (total > 20000) {
@@ -65,8 +66,8 @@ function addEmployee(event) {
 
   // Update total
   total += Number(salary.value);
-  document.querySelector("#salary-total").textContent = `${total}`;
-  if (total > 20000) {
+  document.querySelector("footer").textContent = `Total Monthly: ${total / 12}`;
+  if (total / 12 > 20000) {
     document.querySelector("footer").className = "over-budget";
   }
 
@@ -82,6 +83,7 @@ function addEmployee(event) {
   rows[2].textContent = lastEmployee.id;
   rows[3].textContent = lastEmployee.title;
   rows[4].textContent = lastEmployee.salary;
+  rows[5].children[0].addEventListener("click", deleteParent);
   parent.id = lastEmployee.UUID;
 
   document.querySelector("#employee-table").appendChild(clone);
@@ -93,20 +95,21 @@ function addEmployee(event) {
   title.value = "";
   salary.value = "";
   // Update local storage
-  window.localStorage.setItem("employees", JSON.stringify(employees));
+  // window.localStorage.setItem("employees", JSON.stringify(employees));
 }
 
 function deleteParent(event) {
+  console.log("DELETE");
   // Get parent row <tr>
   let parent = event.target.parentElement.parentElement;
   // Get the UUID which was assigned as an ID attribute on the td earlier
   let parentUUID = parent.getAttribute("id");
   // Adjust total
   total -= Number(parent.querySelectorAll("td")[4].innerText);
-  if (total < 20000) {
+  if (total / 12 < 20000) {
     document.querySelector("footer").className = "";
   }
-  document.querySelector("#salary-total").textContent = total;
+  document.querySelector("footer").textContent = `Total Monthly: ${total / 12}`;
   // Remove parent
   parent.remove();
   // Remove employee object from array
@@ -117,5 +120,5 @@ function deleteParent(event) {
     return false;
   });
   // Lastly update local storage again
-  window.localStorage.setItem("employees", JSON.stringify(employees));
+  // window.localStorage.setItem("employees", JSON.stringify(employees));
 }

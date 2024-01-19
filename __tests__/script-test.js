@@ -7,6 +7,7 @@ const {
   getByText,
   queryByText,
   getByTestId,
+  waitForElementToBeRemoved,
 } = require("@testing-library/dom");
 require("@testing-library/jest-dom");
 const { JSDOM } = require("jsdom");
@@ -26,7 +27,6 @@ let container;
 describe(`Weekend Salary Calculator:`, () => {
   beforeAll(() => {
     // Silence console.log statements while the tests run:
-    console.log = () => {};
   });
 
   beforeEach(() => {
@@ -174,7 +174,7 @@ describe(`Weekend Salary Calculator:`, () => {
     expect(footer).toHaveClass("over-budget");
   });
 
-  it(`Removes the correct employee table row when a delete button is clicked`, () => {
+  it(`Removes the correct employee table row when a delete button is clicked`, async () => {
     const table = container.querySelector("table");
 
     submitEmployee(container, testEmployees[0]);
@@ -182,8 +182,9 @@ describe(`Weekend Salary Calculator:`, () => {
     submitEmployee(container, testEmployees[2]);
 
     const tableButtons = table.querySelectorAll("button");
+    const td = table.querySelectorAll("td");
     const secondRowsButton = tableButtons[1];
-
+    console.log(secondRowsButton.getAttribute("onclick"));
     secondRowsButton.click();
 
     // Expect the second row to have been deleted:
