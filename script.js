@@ -1,40 +1,59 @@
+// Global variables
 let employees = [];
 let total = 0;
-function onLoad() {
-  let ls = window.localStorage.getItem("employees");
-  if (ls) {
-    employees = JSON.parse(ls);
-  }
-  for (const employee of employees) {
-    let template = document.querySelector("#employee-row");
-    const clone = template.content.cloneNode(true);
-    let parent = clone.querySelector("tr");
-    let rows = clone.querySelectorAll("td");
-    let lastEmployee = employees.at(-1);
-    rows[0].textContent = employee.firstName;
-    rows[1].textContent = employee.lastName;
-    rows[2].textContent = employee.id;
-    rows[3].textContent = employee.title;
-    rows[4].textContent = employee.salary;
-    parent.id = lastEmployee.UUID;
-    total += employee.salary;
 
-    document.querySelector("#employee-table").appendChild(clone);
+// Function to load employee array from localStorage if it exists
+function onLoad() {
+  // Get employees key
+  let ls = window.localStorage.getItem("employees");
+  // If there is something there
+  if (ls) {
+    // Parse the json into an object
+    employees = JSON.parse(ls);
+    // Loop over each employee, clone template, fill it in, then append it to the DOM
+    for (const employee of employees) {
+      let template = document.querySelector("#employee-row");
+      const clone = template.content.cloneNode(true);
+      let parent = clone.querySelector("tr");
+      let rows = clone.querySelectorAll("td");
+      let lastEmployee = employees.at(-1);
+      rows[0].textContent = employee.firstName;
+      rows[1].textContent = employee.lastName;
+      rows[2].textContent = employee.id;
+      rows[3].textContent = employee.title;
+      rows[4].textContent = employee.salary;
+      parent.id = lastEmployee.UUID;
+      // Also start adding total meanwhile
+      total += Number(employee.salary);
+
+      document.querySelector("#employee-table").appendChild(clone);
+    }
+    // Fill in total
+    document.querySelector("#salary-total").textContent = `${total}`;
+
+    // Do over budget check
+    if (total > 20000) {
+      document.querySelector("footer").className = "over-budget";
+    }
   }
-  document.querySelector("#salary-total").textContent = `${total}`;
 }
+// Call after DOM content loaded
 onLoad();
+
 function addEmployee(event) {
   event.preventDefault();
 
+  // Get inputs
   let firstName = document.querySelector("#fn");
   let lastName = document.querySelector("#ln");
   let id = document.querySelector("#id");
   let title = document.querySelector("#t");
   let salary = document.querySelector("#s");
 
+  // Create UUID. This will be for updating employees array later
   let UUID = crypto.randomUUID();
 
+  // Push new employee into array
   employees.push({
     firstName: firstName.value,
     lastName: lastName.value,
@@ -44,12 +63,14 @@ function addEmployee(event) {
     UUID,
   });
 
+  // Update total
   total += Number(salary.value);
   document.querySelector("#salary-total").textContent = `${total}`;
   if (total > 20000) {
     document.querySelector("footer").className = "over-budget";
   }
 
+  // Clone template and fill it out, then append to DOM
   let template = document.querySelector("#employee-row");
   const clone = template.content.cloneNode(true);
   let parent = clone.querySelector("tr");
@@ -65,28 +86,36 @@ function addEmployee(event) {
 
   document.querySelector("#employee-table").appendChild(clone);
 
+  // Reset inputs
   firstName.value = "";
   lastName.value = "";
   id.value = "";
   title.value = "";
   salary.value = "";
+  // Update local storage
   window.localStorage.setItem("employees", JSON.stringify(employees));
 }
 
 function deleteParent(event) {
+  // Get parent row <tr>
   let parent = event.target.parentElement.parentElement;
+  // Get the UUID which was assigned as an ID attribute on the td earlier
   let parentUUID = parent.getAttribute("id");
+  // Adjust total
   total -= Number(parent.querySelectorAll("td")[4].innerText);
   if (total < 20000) {
     document.querySelector("footer").className = "";
   }
   document.querySelector("#salary-total").textContent = total;
+  // Remove parent
   parent.remove();
+  // Remove employee object from array
   employees = employees.filter((e) => {
     if (e.UUID !== parentUUID) {
       return true;
     }
     return false;
   });
+  // Lastly update local storage again
   window.localStorage.setItem("employees", JSON.stringify(employees));
 }
