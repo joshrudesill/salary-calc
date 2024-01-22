@@ -1,9 +1,10 @@
-# Project Name
-
-[Project Instructions](./INSTRUCTIONS.md), this line may be removed once you have updated the README.md
+# Salary Calculator
 
 ## Description
 
-Your project description goes here. What problem did you solve? How did you solve it?
+For this project I decided to add some extra feature in addition to the requirements.
+## I added
+- Refresh Persistence using localStorage
+- Instead of using innerHTML I use a HTML template element and the addEventListener method.
 
 Additional README details can be found [here](https://github.com/PrimeAcademy/readme-template/blob/master/README.md).
