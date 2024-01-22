@@ -7,9 +7,9 @@ function onLoad() {
   // This wont run on the main submission to the main branch. Certain stuff will be uncommented here and later in the code for the 'fancy' branch. This is
   // because localStorage breaks the tests. See fancy branch for working version with local storage
   // Get employees key
-  //let ls = window.localStorage.getItem("employees");
+  let ls = window.localStorage.getItem("employees");
   // If there is something there
-  let ls = false;
+  //let ls = false;
   if (ls) {
     // Parse the json into an object
     employees = JSON.parse(ls);
@@ -25,6 +25,7 @@ function onLoad() {
       rows[2].textContent = employee.id;
       rows[3].textContent = employee.title;
       rows[4].textContent = employee.salary;
+      rows[5].children[0].addEventListener("click", deleteParent);
       parent.id = lastEmployee.UUID;
       // Also start adding total meanwhile
       total += Number(employee.salary);
@@ -32,10 +33,12 @@ function onLoad() {
       document.querySelector("#employee-table").appendChild(clone);
     }
     // Fill in total
-    document.querySelector("footer").textContent = `Total Monthly: ${total}`;
+    document.querySelector("footer").textContent = `Total Monthly: ${
+      total / 12
+    }`;
 
     // Do over budget check
-    if (total > 20000) {
+    if (total / 12 > 20000) {
       document.querySelector("footer").className = "over-budget";
     }
   }
@@ -97,7 +100,7 @@ function addEmployee(event) {
   title.value = "";
   salary.value = "";
   // Update local storage
-  // window.localStorage.setItem("employees", JSON.stringify(employees));
+  window.localStorage.setItem("employees", JSON.stringify(employees));
 }
 
 function deleteParent(event) {
@@ -121,5 +124,5 @@ function deleteParent(event) {
     return false;
   });
   // Lastly update local storage again
-  // window.localStorage.setItem("employees", JSON.stringify(employees));
+  window.localStorage.setItem("employees", JSON.stringify(employees));
 }
