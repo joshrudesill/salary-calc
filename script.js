@@ -4,6 +4,8 @@ let total = 0;
 
 // Function to load employee array from localStorage if it exists
 function onLoad() {
+  // This wont run on the main submission to the main branch. Certain stuff will be uncommented here and later in the code for the 'fancy' branch. This is
+  // because localStorage breaks the tests. See fancy branch for working version with local storage
   // Get employees key
   //let ls = window.localStorage.getItem("employees");
   // If there is something there
@@ -99,7 +101,6 @@ function addEmployee(event) {
 }
 
 function deleteParent(event) {
-  console.log("DELETE");
   // Get parent row <tr>
   let parent = event.target.parentElement.parentElement;
   // Get the UUID which was assigned as an ID attribute on the td earlier

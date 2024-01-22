@@ -182,9 +182,7 @@ describe(`Weekend Salary Calculator:`, () => {
     submitEmployee(container, testEmployees[2]);
 
     const tableButtons = table.querySelectorAll("button");
-    const td = table.querySelectorAll("td");
     const secondRowsButton = tableButtons[1];
-    console.log(secondRowsButton.getAttribute("onclick"));
     secondRowsButton.click();
 
     // Expect the second row to have been deleted:
